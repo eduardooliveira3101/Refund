@@ -20,7 +20,6 @@ form.onsubmit = (event) => {
 
   //Função que vai criar e jogar um 
   expenseAdd(newExpense)
-
 }
 
 amount.oninput = () => {
@@ -56,8 +55,31 @@ function expenseAdd(newExpense) {
     expenseIcon.setAttribute('src', `img/${newExpense.category_id}.svg`)
     expenseIcon.setAttribute('alt', newExpense.category_name)
 
+    //Div encapsuladora
+    const expenseInfo = document.createElement('div')
+    expenseInfo.classList.add('expense-info')
+
+    //Criando nome
+    const expenseName = document.createElement('strong')
+    expenseName.textContent = newExpense.expense
+
+    //Categoria da despesa 
+    const expenseCategory = document.createElement('span')
+    expenseCategory.textContent = newExpense.category_name
+
+    //Criando o valor da despesa
+    const expenseAmount = document.createElement('span')
+    expenseAmount.classList.add('expense-amount')
+    expenseAmount.innerHTML = `<small>R$</small>${newExpense.amount.toUpperCase().replace('R$', '')}`
+
+    //Adicionando elemento de nome e categoria dentro da Div encapsuladora
+    expenseInfo.append(expenseName, expenseCategory)
+
     //Adiciona as infornmações no item
-    expenseItem.append(expenseIcon)
+    //O item recebe o novo icon
+    expenseItem.append(expenseIcon, expenseInfo, expenseAmount)
+
+    //A lista recebe um novo item 
     expenseList.append(expenseItem)
 
   } catch(error) {
