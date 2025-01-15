@@ -3,6 +3,8 @@ const amount = document.getElementById('amount')
 const expense = document.getElementById('expense')
 const category = document.getElementById('category')
 
+const expenseList = document.querySelector('ul')
+
 form.onsubmit = (event) => {
   //Previne o evento padrão do formulário
   event.preventDefault()
@@ -43,7 +45,20 @@ function formatCurrencyBRL(value) {
 
 function expenseAdd(newExpense) {
   try {
+    //Criando o elemento para adicionar na lista
 
+    //Criando a lista
+    const expenseItem = document.createElement('li')
+    expenseItem.classList.add('expense')
+
+    //Criando o icone da categoria
+    const expenseIcon = document.createElement('img')
+    expenseIcon.setAttribute('src', `img/${newExpense.category_id}.svg`)
+    expenseIcon.setAttribute('alt', newExpense.category_name)
+
+    //Adiciona as infornmações no item
+    expenseItem.append(expenseIcon)
+    expenseList.append(expenseItem)
 
   } catch(error) {
     alert('Não foi possível atualizar sua lista de despesas.')
