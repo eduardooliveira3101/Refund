@@ -8,8 +8,6 @@ const expenseQuantity = document.querySelector('aside header p span')
 
 const expenseTotal = document.querySelector('aside header h2')
 
-console.log(expenseQuantity)
-
 //Evento no qual vai ser disparado quando o formulário for enviado
 form.onsubmit = (event) => {
   //Previne o evento padrão do formulário
@@ -26,7 +24,6 @@ form.onsubmit = (event) => {
 
   //Função que vai criar e jogar um 
   expenseAdd(newExpense)
-
 
 }
 
@@ -101,6 +98,7 @@ function expenseAdd(newExpense) {
 
     //Atualiza o indice de quantos elementos encontra-se na lista
     updateTotals()
+    formClear()
 
   } catch(error) {
     alert('Não foi possível atualizar sua lista de despesas.')
@@ -128,7 +126,7 @@ function updateTotals() {
       const itemAmount = itens[item].querySelector('.expense-amount')
 
       //Remover caracteres não numericos e substiitui a virgula pelo ponto
-      let value = itemAmount.textContent.replace(/[^\d]/g,'').replace(',', '.')
+      let value = itemAmount.textContent.replace(/[^\d,]/g,'').replace(',', '.')
 
       //Converter o valor para float
       value = parseFloat(value)
@@ -142,10 +140,43 @@ function updateTotals() {
       total += Number(value)
     }
 
-    expenseTotal.textContent = total
+    //criar a span para devolver o valor formatado
+    const symblBRL = document.createElement('small')
+    symblBRL.textContent = `R$`
+
+    //Formata o valor sem o simbolo, que será exibido pela small
+    total = formatCurrencyBRL(total).toUpperCase().replace('R$', '')
+
+    //Limpa o conteudo do elemento
+    expenseTotal.innerHTML = ''
+
+    expenseTotal.append(symblBRL, total)
+
 
   } catch (error) {
     console.log(error)
     alert('Não foi possível atualizar os totais')
   }
+}
+
+expenseList.addEventListener('click', (event) => {
+  if(event.target.classList.contains('remove-icon')) {
+    //Obter a LI pai do elemento clicado
+    const item = event.target.closest('.expense')
+    //Remove o item da lista
+    item.remove()
+  }
+
+  //Atualiza os totais
+  updateTotals()
+})
+
+function formClear() {
+  //Limpa todos os campos
+  expense.value = ''
+  category.value = ''
+  amount.value = ''
+
+  //Coloca foco no input
+  expense.focus()
 }
